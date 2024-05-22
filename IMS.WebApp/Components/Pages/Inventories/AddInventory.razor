@@ -1,6 +1,7 @@
 ﻿@page "/addinventory"
 
 @inject IAddInventoryUseCase AddInventoryUseCase
+@inject NavigationManager NavigationManager
 
 <h3>Add Inventory</h3>
 <br/>
@@ -49,6 +50,8 @@
     private async Task Save()
     {
         await AddInventoryUseCase.ExecuteAsync(inventory);
+
+        NavigationManager.NavigateTo("/inventories");
     }
 
 }
