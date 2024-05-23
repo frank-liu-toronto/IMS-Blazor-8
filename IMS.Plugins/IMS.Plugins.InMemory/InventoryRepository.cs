@@ -38,6 +38,11 @@ namespace IMS.Plugins.InMemory
             return _inventories.Where(x => x.InventoryName.Contains(name, StringComparison.OrdinalIgnoreCase));
         }
 
+        public async Task<Inventory> GetInventoryByIdAsync(int inventoryId)
+        {
+            return await Task.FromResult(_inventories.First(x => x.InventoryId == inventoryId));
+        }
+
         public Task UpdateInventoryAsync(Inventory inventory)
         {
             if (_inventories.Any(x => x.InventoryId != inventory.InventoryId &&
