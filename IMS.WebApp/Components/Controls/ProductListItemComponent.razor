@@ -1,0 +1,28 @@
+﻿@inject NavigationManager NavigationManager
+
+@if (this.Product is not null)
+{
+    <tr>
+        <td>@Product.ProductName</td>
+        <td>@Product.Quantity</td>
+        <td>@Product.Price.ToString("c")</td>
+        <td>
+            <a class="btn btn-light"
+                href="/editproduct/@Product.ProductId">
+                Edit
+            </a>
+        </td>
+        <td>
+            
+        </td>
+    </tr>
+}
+
+@code {
+
+    [Parameter]
+    public Product? Product { get; set; }
+
+    
+
+}
