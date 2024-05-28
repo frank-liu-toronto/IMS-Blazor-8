@@ -3,7 +3,7 @@
 <div class="input-group">
     <input class="form-control"
                placeholder="Type something to search"
-               @bind-value="this.searchFilter">
+               @bind-value="this.searchFilter" @bind-value:event="oninput">
     </input>
     <button type="button" class="btn-success input-group-text" @onclick="HandleSearch">Search</button>
 </div>
@@ -22,12 +22,24 @@
 }
 
 @code {
-    private string searchFilter = string.Empty;
+    private string _searchFilter;
+    private string searchFilter
+    {
+        get => _searchFilter;
+        set
+        {
+            _searchFilter = value;
+            HandleSearch();
+        }
+    }
     private List<Inventory> inventories = new List<Inventory>();
 
     private async Task HandleSearch()
     {
+        await Task.Delay(1000); // similate a relative long runing database call
         inventories = (await ViewInventoriesByNameUseCase.ExecuteAsync(this.searchFilter)).ToList();
+
+        StateHasChanged();
     }
 
 }
