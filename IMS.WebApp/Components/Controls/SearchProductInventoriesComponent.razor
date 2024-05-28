@@ -9,11 +9,11 @@
 </div>
 @if (inventories is not null && inventories.Count > 0)
 {
-    <div style="overflow-y:auto; max-height:300px; border: 1px solid silver; padding-top:5px ">    
-        <ul style="list-style-type: none">
+    <div class="search-result">    
+        <ul>
             @foreach(var inv in inventories)
             {
-                <li @key="inv.InventoryId" style="cursor:pointer">
+                <li @key="inv.InventoryId">
                     @inv.InventoryName
                 </li>
             }
