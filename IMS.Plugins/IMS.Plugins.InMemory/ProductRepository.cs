@@ -89,15 +89,16 @@ namespace IMS.Plugins.InMemory
         public Task UpdateProductAsync(Product product)
         {
             if (_products.Any(x => x.ProductId != product.ProductId &&
-                x.ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase)))
+                x.ProductName.ToLower() == product.ProductName.ToLower()))
                 return Task.CompletedTask;
 
-            var invToUpdate = _products.FirstOrDefault(x => x.ProductId == product.ProductId);
-            if (invToUpdate is not null) 
-            { 
-                invToUpdate.ProductName = product.ProductName;
-                invToUpdate.Quantity = product.Quantity;
-                invToUpdate.Price = product.Price;
+            var prod = _products.FirstOrDefault(x => x.ProductId == product.ProductId);
+            if (prod is not null) 
+            {
+                prod.ProductName = product.ProductName;
+                prod.Quantity = product.Quantity;
+                prod.Price = product.Price;
+                prod.ProductInventories = product.ProductInventories;
             }
 
             return Task.CompletedTask;
