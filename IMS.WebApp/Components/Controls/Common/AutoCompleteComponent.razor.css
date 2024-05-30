@@ -8,9 +8,13 @@
 div ul {
     list-style-type: none;
     margin-bottom: 5px;
-    padding-left: 10px;
+    padding-left:10px;
 }
 
-div ul li{
+div ul li {
     cursor: pointer;
+}
+
+.selected{
+    background-color:antiquewhite;
 }

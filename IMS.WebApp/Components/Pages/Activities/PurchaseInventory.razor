@@ -10,9 +10,13 @@
 
 <AutoCompleteComponent     
     Label="Inventory"
-    SearchFunction="SearchInventory"></AutoCompleteComponent>
+    SearchFunction="SearchInventory"
+    OnItemSelected="HandleItemSelected"></AutoCompleteComponent>
+ <br/>
+ @selectedItem?.Name
 
 @code {
+    private ItemViewModel? selectedItem;
 
     private List<ItemViewModel>? SearchInventory(string name)
     {
@@ -20,6 +24,11 @@
         if (list is null) return null;
 
         return list.Select(x => new ItemViewModel { Id = x.InventoryId, Name = x.InventoryName })?.ToList();
+    }
+
+    private void HandleItemSelected(ItemViewModel item)
+    {
+        this.selectedItem = item;
     }
 
 }
