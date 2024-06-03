@@ -1,4 +1,5 @@
 ﻿using IMS.CoreBusiness;
+using IMS.WebApp.ViewModelsValidations;
 using System.ComponentModel.DataAnnotations;
 
 namespace IMS.WebApp.ViewModels
@@ -12,6 +13,7 @@ namespace IMS.WebApp.ViewModels
         public int ProductId { get; set; }
 
         [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = "Qauntity has to be greater or equal to 1.")]
+        [Sell_EnsureEnoughProductQuantity]
         public int QuantityToSell { get; set; }
 
         [Range(minimum: 0, maximum: int.MaxValue, ErrorMessage = "Price has to be greater or equal to 0.")]
