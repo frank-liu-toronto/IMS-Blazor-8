@@ -4,6 +4,8 @@
 
 @rendermode InteractiveServer
 
+@inject IJSRuntime JSRuntime
+
 @inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
 @inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
 @inject IPurchaseInventoryUseCase PurchaseInventoryUseCase
@@ -11,7 +13,7 @@
 <h3>Purchase Inventory</h3>
 <br/>
 
-<EditForm Model="purchaseViewModel" OnValidSubmit="Purchase">
+<EditForm id="purchase-form" Model="purchaseViewModel" OnValidSubmit="Purchase">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
@@ -50,6 +52,16 @@
     private PurchaseViewModel purchaseViewModel = new PurchaseViewModel();
 
     private Inventory? selectedInventory = null;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            JSRuntime.InvokeVoidAsync("preventFormSubmission", "purchase-form");
+        }
+    }
 
     private List<ItemViewModel>? SearchInventory(string name)
     {
