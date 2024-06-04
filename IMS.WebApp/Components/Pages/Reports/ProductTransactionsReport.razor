@@ -3,79 +3,86 @@
 
 @rendermode InteractiveServer
 
+@inject IJSRuntime JSRuntime
 @inject ISearchProductTransactionsUseCase SearchProductTransactionsUseCase
 
 <h3>Product Transactions</h3>
 <br/>
 
-<div class="row">
-    <div class="col">
-        <label for="prod">Product Name</label>
-        <input type="text" id="prod" class="form-control" @bind-value="prodName" />
+<div id="printarea">
+    <div class="row">
+        <div class="col">
+            <label for="prod">Product Name</label>
+            <input type="text" id="prod" class="form-control" @bind-value="prodName" />
+        </div>
+        <div class="col">
+            <label for="df">Date From</label>
+            <input type="date" id="df" class="form-control" @bind-value="dateFrom" />
+        </div>
+        <div class="col">
+            <label for="dt">Date To</label>
+            <input type="date" id="dt" class="form-control" @bind-value="dateTo" />
+        </div>
+        <div class="col">
+            <label for="at">Activity Type</label>
+            <select id="at" class="form-control" @bind="activityTypeId">
+                <option value="0"></option>
+                <option value="1">Produce Product</option>
+                <option value="2">Sell Product</option>
+            </select>
+        </div>
+        <div class="col">
+            <label>&nbsp;</label>
+            <button type="button" class="btn btn-primary form-control" @onclick="SearchProducts">Search</button>
+        </div>
+        <div class="col">
+            <label>&nbsp;</label>
+            <button type="button" class="btn btn-primary form-control" @onclick="Print">Print</button>
+        </div>
     </div>
-    <div class="col">
-        <label for="df">Date From</label>
-        <input type="date" id="df" class="form-control" @bind-value="dateFrom" />
-    </div>
-    <div class="col">
-        <label for="dt">Date To</label>
-        <input type="date" id="dt" class="form-control" @bind-value="dateTo" />
-    </div>
-    <div class="col">
-        <label for="at">Activity Type</label>
-        <select id="at" class="form-control" @bind="activityTypeId">
-            <option value="0"></option>
-            <option value="1">Produce Product</option>
-            <option value="2">Sell Product</option>
-        </select>
-    </div>
-    <div class="col">
-        <label>&nbsp;</label>
-        <button type="button" class="btn btn-primary form-control" @onclick="SearchProducts">Search</button>
-    </div>
-</div>
 
-@if (productTransactions != null && productTransactions.Count() > 0)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Product</th>
-                <th>Activity</th>
-                <th>Qty Before</th>
-                <th>Qty After</th>
-                <th>Unit Price</th>
-                <th>SO#</th>
-                <th>Production #</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var it in productTransactions)
-            {
+    @if (productTransactions != null && productTransactions.Count() > 0)
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@it.TransactionDate.ToString("MM/dd/yyyy")</td>
-                    <td>@it.Product.ProductName</td>
-                    <td>
-                        @if (it.ActivityType == ProductTransactionType.ProduceProduct)
-                        {
-                            <text>Produce</text>
-                        }
-                        else if (it.ActivityType == ProductTransactionType.SellProduct)
-                        {
-                            <text>Sell</text>
-                        }
-                    </td>
-                    <td>@it.QuantityBefore</td>
-                    <td>@it.QuantityAfter</td>
-                    <td>@it.UnitPrice?.ToString("c")</td>
-                    <td>@it.SONumber</td>
-                    <td>@it.ProdutionNumber</td>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Activity</th>
+                    <th>Qty Before</th>
+                    <th>Qty After</th>
+                    <th>Unit Price</th>
+                    <th>SO#</th>
+                    <th>Production #</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var it in productTransactions)
+                {
+                    <tr>
+                        <td>@it.TransactionDate.ToString("MM/dd/yyyy")</td>
+                        <td>@it.Product.ProductName</td>
+                        <td>
+                            @if (it.ActivityType == ProductTransactionType.ProduceProduct)
+                            {
+                                <text>Produce</text>
+                            }
+                            else if (it.ActivityType == ProductTransactionType.SellProduct)
+                            {
+                                <text>Sell</text>
+                            }
+                        </td>
+                        <td>@it.QuantityBefore</td>
+                        <td>@it.QuantityAfter</td>
+                        <td>@it.UnitPrice?.ToString("c")</td>
+                        <td>@it.SONumber</td>
+                        <td>@it.ProdutionNumber</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
 @code {
 
@@ -97,6 +104,11 @@
             dateTo,
             prodType
         );
+    }
+
+    private async Task Print()
+    {
+        await JSRuntime.InvokeVoidAsync("print");
     }
 
 }
