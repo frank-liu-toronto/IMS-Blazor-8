@@ -56,7 +56,7 @@ namespace IMS.Plugins.InMemory
                 ProdutionNumber = productionNumber,
                 ProductId = product.ProductId,
                 QuantityBefore = product.Quantity,
-                ActivityType = ProductTransactionType.ProductProduct,
+                ActivityType = ProductTransactionType.ProduceProduct,
                 QuantityAfter = product.Quantity + quantity,
                 TransactionDate = DateTime.Now,
                 DoneBy = doneBy
