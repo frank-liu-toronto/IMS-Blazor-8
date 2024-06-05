@@ -5,6 +5,11 @@ namespace IMS.Plugins.EFCoreSqlServer
 {
     public class IMSContext : DbContext
     {
+        public IMSContext(DbContextOptions<IMSContext> options): base(options)
+        {
+            
+        }
+
         public DbSet<Inventory>? Inventories { get; set; }
         public DbSet<Product>? Products { get; set; }
         public DbSet<ProductInventory>? ProductInventories { get; set; }
