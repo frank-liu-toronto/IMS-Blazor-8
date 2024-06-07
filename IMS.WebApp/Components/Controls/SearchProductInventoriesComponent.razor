@@ -29,7 +29,7 @@
     [Parameter]
     public EventCallback<Inventory> OnInventorySelected { get; set; }
 
-    private string _searchFilter;
+    private string _searchFilter = string.Empty;
     private string searchFilter
     {
         get => _searchFilter;
