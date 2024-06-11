@@ -6,6 +6,7 @@
 
 @rendermode InteractiveServer
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 
 @inject IViewProductsByNameUseCase ViewProductsByNameUseCase
@@ -50,6 +51,12 @@
 @code {
     private SellViewModel sellViewModel = new SellViewModel();
     private Product? selectedProduct;
+    private AuthenticationState? authState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -80,12 +87,20 @@
 
     private async Task Sell()
     {
+
+        string userName = string.Empty;
+
+        if (authState?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            userName = authState.User.Identity.Name ?? string.Empty;
+        }
+
         await SellProductUseCase.ExecuteAsync(
             this.sellViewModel.SalesOrderNumber,
             this.selectedProduct,
             this.sellViewModel.QuantityToSell,
             this.sellViewModel.UnitPrice,
-            "Frank");
+            userName);
 
         this.sellViewModel = new SellViewModel();
         this.selectedProduct = null;

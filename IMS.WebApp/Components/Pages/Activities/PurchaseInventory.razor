@@ -6,6 +6,7 @@
 
 @rendermode InteractiveServer
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 
 @inject IViewInventoriesByNameUseCase ViewInventoriesByNameUseCase
@@ -55,6 +56,13 @@
 
     private Inventory? selectedInventory = null;
 
+    private AuthenticationState? authState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -83,11 +91,18 @@
 
     private async Task Purchase()
     {
+        string userName = string.Empty;
+
+        if (authState?.User?.Identity?.IsAuthenticated ?? false)
+        {
+            userName = authState.User.Identity.Name ?? string.Empty;
+        }
+
         await PurchaseInventoryUseCase.ExecuteAsync(
             this.purchaseViewModel.PONumber,
             selectedInventory,
             this.purchaseViewModel.QuantityToPurchase,
-            "Frank"
+            userName
             );
 
         this.purchaseViewModel = new PurchaseViewModel();
