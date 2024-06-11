@@ -1,6 +1,6 @@
 ﻿@page "/products"
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Inventory")]
 
 <h3>Product List</h3>
 <br/>

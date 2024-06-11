@@ -2,7 +2,7 @@
 
 @using static IMS.WebApp.Components.Controls.Common.AutoCompleteComponent
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = "Purchasers")]
 
 @rendermode InteractiveServer
 
