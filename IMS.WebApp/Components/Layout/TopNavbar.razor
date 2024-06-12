@@ -13,60 +13,68 @@
         </button>
         <div class="@collapseOrNot navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <li class="nav-item" @onclick="CollapseDropdownMenus">
                     <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                         <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
                     </NavLink>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" @onclick="CollapseDropdownMenus">
                     <NavLink class="nav-link" href="inventories">
                         <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Inventories
                     </NavLink>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" @onclick="CollapseDropdownMenus">
                     <NavLink class="nav-link" href="products">
                         <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Products
                     </NavLink>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" @onclick="ToggleActivities">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Activities
                     </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <NavLink class="nav-link" href="purchase">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Purchase
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink class="nav-link" href="produce">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Produce
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink class="nav-link" href="sell">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Sell
-                            </NavLink>
-                        </li>
-                    </ul>
+
+                    @if (!collapseActivitiesMenu)
+                    {
+                        <ul class="dropdown-menu show">
+                            <li>
+                                <NavLink class="dropdown-item" href="purchase">
+                                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Purchase
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="dropdown-item" href="produce">
+                                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Produce
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="dropdown-item" href="sell">
+                                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Sell
+                                </NavLink>
+                            </li>
+                        </ul>
+                    }                       
                 </li>
 
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" @onclick="ToggleReports">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Reports
                     </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <NavLink class="nav-link" href="inventoryreport">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Inventory Report
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink class="nav-link" href="productreport">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Product Report
-                            </NavLink>
-                        </li>
-                    </ul>
+                    @if (!collapseReportsMenu)
+                    {
+                        <ul class="dropdown-menu show">
+                            <li>
+                                <NavLink class="dropdown-item" href="inventoryreport">
+                                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Inventory Report
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink class="dropdown-item" href="productreport">
+                                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Product Report
+                                </NavLink>
+                            </li>
+                        </ul>
+                    }
+                    
                 </li>
             </ul>
 
@@ -110,6 +118,9 @@
     private bool collapseNavMenu = true;
     private string collapseOrNot = "collapse";
 
+    private bool collapseActivitiesMenu = true;
+    private bool collapseReportsMenu = true;
+
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
@@ -126,6 +137,24 @@
     {
         collapseNavMenu = !collapseNavMenu;
         collapseOrNot = collapseNavMenu ? "collapse" : string.Empty;
+    }
+
+    private void ToggleActivities()
+    {
+        collapseActivitiesMenu = !collapseActivitiesMenu;
+        collapseReportsMenu = true;
+    }
+
+    private void ToggleReports()
+    {
+        collapseReportsMenu = !collapseReportsMenu;
+        collapseActivitiesMenu = true;
+    }
+
+    private void CollapseDropdownMenus()
+    {
+        collapseActivitiesMenu = true;
+        collapseReportsMenu = true;
     }
 
     public void Dispose()
